@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_temp_text">36dp</dimen>
+    <dimen name="card_city_text">13dp</dimen>
+    <dimen name="card_country_code_text">10dp</dimen>
+    <dimen name="card_height">120dp</dimen>
+    <dimen name="card_width">140dp</dimen>
+
+    <dimen name="card_list_padding">20dp</dimen>
+
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="padding_left_main_activity">15dp</dimen>
+    <dimen name="padding_layout_perfil">20dp</dimen>
+    <dimen name="margin_left_view_perfil">30dp</dimen>
+    <dimen name="size_view_separetor">2dp</dimen>
+    <dimen name="size_layout_profile_data">55dp</dimen>
+    <dimen name="size_layout_icon_editar">40dp</dimen>
+    <dimen name="size_circle_imageview_conta">125dp</dimen>
+</resources>
