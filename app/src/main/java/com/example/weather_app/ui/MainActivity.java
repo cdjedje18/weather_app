@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +19,12 @@ import com.example.weather_app.adapter.CityAdapter;
 import com.example.weather_app.model.City;
 import com.example.weather_app.model.WeatherList;
 import com.example.weather_app.model.WeatherResponse;
+import com.example.weather_app.model.common.Weather;
 import com.example.weather_app.service.Api;
 import com.example.weather_app.utils.Constants;
+import com.example.weather_app.utils.LocationTracker;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     CardView currentLocation;
     LinearLayout infoTextWrapper;
-    TextView infoText;
+    TextView infoText, locationBtnTxt;
     List<City> cities;
     List<String> codes;
 
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         currentLocation = (CardView) findViewById(R.id.current_location);
         infoTextWrapper = (LinearLayout) findViewById(R.id.info_text_wrapper);
         infoText = (TextView) findViewById(R.id.info_text);
+        locationBtnTxt = (TextView) findViewById(R.id.current_location_btn);
 
 
         cities = new ArrayList<>();
@@ -103,5 +109,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void seeCurrentLocation(View view){
+        LocationTracker locationTracker = new LocationTracker(MainActivity.this);
+        if(locationTracker.canGetLocation()){
+
+            locationBtnTxt.setText("A carregar localização...");
+
+            double latitude = locationTracker.getLatitude();
+            double longitude = locationTracker.getLongitude();
+            Log.i("Current", "Lat: "+latitude+" "+"Long: "+longitude);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Api mApi = retrofit.create(Api.class);
+
+            Call<WeatherResponse> call = mApi.getLocationWeather(String.valueOf(latitude),String.valueOf(longitude), Constants.LANG, Constants.UNITS, Constants.API_KEY);
+
+            call.enqueue(new Callback<WeatherResponse>() {
+                @Override
+                public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+//                    Log.i("Response", response.body().getName());
+                    locationBtnTxt.setText("Minha Localização");
+
+                    Intent intent = new Intent(MainActivity.this, CityWeather.class);
+                    intent.putExtra("weather", response.body());
+                    (MainActivity.this).startActivity(intent);
+
+                }
+
+                @Override
+                public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                    infoText.setText("Erro ao Carregar");
+                }
+            });
+
+        }else{
+            locationTracker.showSettingsAlert();
+        }
     }
 }
