@@ -1,25 +1,3 @@
 <resources>
-    <string name="app_name">weather_app</string>
-
-    <string name="lisboa">Lisboa</string>
-    <string name="lisboa_id">2267057</string>
-
-    <string name="madrid">Madrid</string>
-    <string name="madrid_id">3117735</string>
-
-    <string name="paris">Paris</string>
-    <string name="paris_id">2988507</string>
-
-    <string name="berlim">Berlim</string>
-    <string name="berlim_id">2950159</string>
-
-    <string name="copenhaga">Copenhaga</string>
-    <string name="copenhaga_id">2618425</string>
-
-    <string name="roma">Roma</string>
-    <string name="roma_id">5134295</string>
-
-    <string name="londres">Londres</string>
-    <string name="londres_id">2643743</string>
-
+    <string name="app_name">Weather App</string>
 </resources>

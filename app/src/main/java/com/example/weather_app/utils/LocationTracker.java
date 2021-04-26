@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,26 +26,20 @@ public class LocationTracker extends Service implements LocationListener {
 
     private final Context mContext;
 
-    // flag for GPS status
     boolean isGPSEnabled = false;
 
-    // flag for network status
     boolean isNetworkEnabled = false;
 
-    // flag for GPS status
     boolean canGetLocation = false;
 
-    Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
+    Location location;
+    double latitude;
+    double longitude;
 
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
 
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
-    // Declaring a Location Manager
     protected LocationManager locationManager;
 
     public LocationTracker(Context context) {
@@ -61,8 +56,9 @@ public class LocationTracker extends Service implements LocationListener {
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+//            Log.i("test", isGPSEnabled+" "+isNetworkEnabled);
             if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
+
             } else {
                 this.canGetLocation = true;
 

@@ -121,35 +121,40 @@ public class MainActivity extends AppCompatActivity {
             double longitude = locationTracker.getLongitude();
             Log.i("Current", "Lat: "+latitude+" "+"Long: "+longitude);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+            if((int)latitude != 0 && (int)longitude!=0){
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(Constants.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-            Api mApi = retrofit.create(Api.class);
+                Api mApi = retrofit.create(Api.class);
 
-            Call<WeatherResponse> call = mApi.getLocationWeather(String.valueOf(latitude),String.valueOf(longitude), Constants.LANG, Constants.UNITS, Constants.API_KEY);
+                Call<WeatherResponse> call = mApi.getLocationWeather(String.valueOf(latitude),String.valueOf(longitude), Constants.LANG, Constants.UNITS, Constants.API_KEY);
 
-            call.enqueue(new Callback<WeatherResponse>() {
-                @Override
-                public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                call.enqueue(new Callback<WeatherResponse>() {
+                    @Override
+                    public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
 //                    Log.i("Response", response.body().getName());
-                    locationBtnTxt.setText("Minha Localização");
+                        locationBtnTxt.setText("Minha Localização");
 
-                    Intent intent = new Intent(MainActivity.this, CityWeather.class);
-                    intent.putExtra("weather", response.body());
-                    (MainActivity.this).startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this, CityWeather.class);
+                        intent.putExtra("weather", response.body());
+                        (MainActivity.this).startActivity(intent);
 
-                }
+                    }
 
-                @Override
-                public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                    infoText.setText("Erro ao Carregar");
-                }
-            });
+                    @Override
+                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                        infoText.setText("Erro ao Carregar");
+                    }
+                });
+            }else{
+                locationBtnTxt.setText("Minha Localização");
+            }
 
         }else{
-            locationTracker.showSettingsAlert();
+            locationBtnTxt.setText("Minha Localização");
+//            locationTracker.showSettingsAlert();
         }
     }
 }
